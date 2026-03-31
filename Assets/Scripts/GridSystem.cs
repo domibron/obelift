@@ -36,6 +36,8 @@ public class GridSystem : MonoBehaviour
             if (selectedGridPos.HasValue)
             {
                 Debug.DrawLine(GetGridPosAsWrold(selectedGridPos.Value), GetGridPosAsWrold(selectedGridPos.Value) + Vector3.up, Color.cyan, 1f);
+
+                FindFirstObjectByType<PlayerMovement>()?.MoveTo(GetGridPosAsWrold(selectedGridPos.Value));
             }
         }
     }
@@ -61,8 +63,16 @@ public class GridSystem : MonoBehaviour
     {
         Vector3 localPos = pos - transform.position;
 
+        localPos /= gridSize;
+
+        localPos.x = Mathf.Round(localPos.x);
+        localPos.z = Mathf.Round(localPos.z);
+
+        localPos *= gridSize;
+
         return new Vector2Int(Mathf.RoundToInt(localPos.x), Mathf.RoundToInt(localPos.z));
     }
+
 
     // This is cool, will remove later just want it in history.
     // Vector3 GetGridPosAsWorld(Vector3 pos, ConvertToGrid gridFunc)
