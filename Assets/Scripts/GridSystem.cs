@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,6 +15,13 @@ public class GridSystem : MonoBehaviour
     [SerializeField]
     LayerMask gridLayerMask = Physics.AllLayers;
 
+    delegate Vector2Int ConvertToGrid(Vector3 pos);
+
+    Vector2Int? selectedGridPos = null;
+
+    public event Action<Vector3> OnGridSelected;
+    public event Action<Vector3> OnGridHoverChanged;
+
     void Start()
     {
         mainCam = Camera.main;
@@ -21,28 +29,83 @@ public class GridSystem : MonoBehaviour
 
     void Update()
     {
-        Ray ray = mainCam.ScreenPointToRay(Mouse.current.position.value);
+        UpdateSelectedGridPos();
 
-
-        if (Physics.Raycast(ray, out RaycastHit hit, maxDist, gridLayerMask, QueryTriggerInteraction.Ignore))
+        if (InputSystem.actions.FindAction("Attack").IsPressed())
         {
-            print("HITTING");
+            if (selectedGridPos.HasValue)
+            {
+                Debug.DrawLine(GetGridPosAsWrold(selectedGridPos.Value), GetGridPosAsWrold(selectedGridPos.Value) + Vector3.up, Color.cyan, 1f);
+            }
+        }
+    }
 
-            Debug.DrawLine(mainCam.transform.position, hit.point, Color.green, 1f);
-
-            print(GetGridPos(hit.collider.transform.position));
+    void UpdateSelectedGridPos()
+    {
+        if (Physics.Raycast(GetMouseAsRay(), out RaycastHit hit, maxDist, gridLayerMask, QueryTriggerInteraction.Ignore))
+        {
+            selectedGridPos = GetGridPosRound(hit.point);
         }
         else
         {
-            Debug.DrawRay(ray.origin, ray.direction * maxDist, Color.red, 1f);
+            selectedGridPos = null;
         }
-
     }
 
-    Vector2Int GetGridPos(Vector3 pos)
+    Ray GetMouseAsRay()
+    {
+        return mainCam.ScreenPointToRay(Mouse.current.position.value);
+    }
+
+    Vector2Int GetGridPosRound(Vector3 pos)
     {
         Vector3 localPos = pos - transform.position;
 
-        return new Vector2Int(Mathf.FloorToInt(localPos.x), Mathf.FloorToInt(localPos.z));
+        return new Vector2Int(Mathf.RoundToInt(localPos.x), Mathf.RoundToInt(localPos.z));
+    }
+
+    // This is cool, will remove later just want it in history.
+    // Vector3 GetGridPosAsWorld(Vector3 pos, ConvertToGrid gridFunc)
+    // {
+    //     return transform.position + ConvertVec2IntoToVec3(gridFunc.Invoke(pos));
+    // }
+
+    Vector3 GetGridPosAsWrold(Vector2Int pos)
+    {
+        return transform.position + ConvertVec2IntoToVec3(pos);
+
+    }
+
+    Vector3 GetPosAsGridWorld(Vector3 pos)
+    {
+        return transform.position + ConvertVec2IntoToVec3(GetGridPosRound(pos));
+
+    }
+
+    Vector3 ConvertVec2IntoToVec3(Vector2Int vec, float y = 0)
+    {
+        return new Vector3(vec.x, y, vec.y);
+    }
+
+    void OnDrawGizmos()
+    {
+        Vector3 size = new Vector3(gridSize, gridSize, gridSize);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawCube(transform.position, size);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireCube(transform.position + (Vector3.right * gridSize), size);
+        Gizmos.DrawWireCube(transform.position + (Vector3.forward * gridSize), size);
+        Gizmos.DrawWireCube(transform.position + (Vector3.left * gridSize), size);
+        Gizmos.DrawWireCube(transform.position + (Vector3.back * gridSize), size);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireCube(transform.position + (Vector3.right * gridSize) + (Vector3.forward * gridSize), size);
+        Gizmos.DrawWireCube(transform.position + (Vector3.left * gridSize) + (Vector3.forward * gridSize), size);
+        Gizmos.DrawWireCube(transform.position + (Vector3.right * gridSize) + (Vector3.back * gridSize), size);
+        Gizmos.DrawWireCube(transform.position + (Vector3.left * gridSize) + (Vector3.back * gridSize), size);
+
+        Gizmos.color = Color.white;
     }
 }
