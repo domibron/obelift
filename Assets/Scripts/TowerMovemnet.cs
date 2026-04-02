@@ -1,12 +1,11 @@
-using System;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class PlayerMovement : MonoBehaviour
+public class TowerMovemnet : MonoBehaviour
 {
     NavMeshAgent navMeshAgent;
 
-    public int MoveRange = 5;
+    public int TowerRange = 3;
 
     void Awake()
     {
@@ -18,8 +17,9 @@ public class PlayerMovement : MonoBehaviour
         navMeshAgent.SetDestination(pos);
     }
 
-    internal bool HasReachedDestination()
+    public bool HasReachedDestination()
     {
         return navMeshAgent.remainingDistance < 0.0001f;
     }
+
 }
