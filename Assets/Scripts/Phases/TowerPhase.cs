@@ -39,6 +39,18 @@ public class TowerPhase : PhaseStateBase
             {
                 if (gridSystem.CurrentSelectedTile.HasValue)
                 {
+                    if (Vector3.Distance(gridSystem.CurrentSelectedTile.Value, gridSystem.GetPosAsGridWorld(towerMovemnet.transform.position)) < GameManager.MIN_MOVE_DIST)
+                    {
+                        gameManager.ChangePhase(Phase.PlayerMove);
+                        return;
+                    }
+                    else if (!gridSystem.CheckGridIsEmpty(gridSystem.CurrentSelectedTile.Value, Constants.GRID_BLOCKER_LAYER))
+                    {
+                        // Debug.DrawLine(gridSystem.CurrentSelectedTile.Value, gridSystem.CurrentSelectedTile.Value + Vector3.up, Color.cyan, 10f);
+                        Debug.Log("Failed to move, its blocked");
+                        return;
+                    }
+
                     towerMovemnet.MoveTo(gridSystem.CurrentSelectedTile.Value);
                     gridSystem.ClearSelectableGrid();
                     hasSelected = true;

@@ -37,8 +37,9 @@ public class GameManager : MonoBehaviour
 
     public CameraTarget CameraTarget;
 
+    public EnemyManager EnemyManager;
 
-
+    public const float MIN_MOVE_DIST = 0.01f;
 
     bool phaseChangeOccured = false;
 
@@ -70,6 +71,7 @@ public class GameManager : MonoBehaviour
         {
             {Phase.MoveTower, new TowerPhase(this)},
             {Phase.PlayerMove, new PlayerPhase(this)},
+            {Phase.EnemiesMove, new EnemyPhase(this)},
         };
     }
 
@@ -79,7 +81,7 @@ public class GameManager : MonoBehaviour
         CallExitPhase(CurrentPhase);
         CallEnterPhase(newPhase);
 
-        print($"Phase has changed! {CurrentPhase} to {newPhase}");
+        // print($"Phase has changed! {CurrentPhase} to {newPhase}");
         CurrentPhase = newPhase;
     }
 

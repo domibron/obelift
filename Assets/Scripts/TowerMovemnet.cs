@@ -19,7 +19,7 @@ public class TowerMovemnet : MonoBehaviour
 
     public bool HasReachedDestination()
     {
-        return navMeshAgent.remainingDistance < 0.0001f;
+        return navMeshAgent.remainingDistance < GameManager.MIN_MOVE_DIST;
     }
 
 }

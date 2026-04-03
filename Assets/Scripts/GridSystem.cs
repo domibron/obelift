@@ -30,6 +30,8 @@ public class GridSystem : MonoBehaviour
 
     private List<GameObject> selectableTiles = new List<GameObject>();
 
+
+
     public Vector3? SelectedWorldPos
     {
         get
@@ -122,7 +124,7 @@ public class GridSystem : MonoBehaviour
         return mainCam.ScreenPointToRay(Mouse.current.position.value);
     }
 
-    Vector2Int GetGridPosRound(Vector3 pos)
+    public Vector2Int GetGridPosRound(Vector3 pos)
     {
         Vector3 localPos = pos - transform.position;
 
@@ -143,19 +145,19 @@ public class GridSystem : MonoBehaviour
     //     return transform.position + ConvertVec2IntoToVec3(gridFunc.Invoke(pos));
     // }
 
-    Vector3 GetGridPosAsWrold(Vector2Int pos)
+    public Vector3 GetGridPosAsWrold(Vector2Int pos)
     {
         return transform.position + (ConvertVec2IntoToVec3(pos) * gridSize) + (Vector3.up * (gridSize / 2f));
 
     }
 
-    Vector3 GetPosAsGridWorld(Vector3 pos)
+    public Vector3 GetPosAsGridWorld(Vector3 pos)
     {
         return transform.position + (ConvertVec2IntoToVec3(GetGridPosRound(pos)) * gridSize) + (Vector3.up * (gridSize / 2f));
 
     }
 
-    Vector3 ConvertVec2IntoToVec3(Vector2Int vec, float y = 0)
+    public Vector3 ConvertVec2IntoToVec3(Vector2Int vec, float y = 0)
     {
         return new Vector3(vec.x, y, vec.y);
     }
@@ -188,6 +190,116 @@ public class GridSystem : MonoBehaviour
                 }
             }
         }
+    }
+
+    public int GetDistanceOnGrid(Vector3 worldPosA, Vector3 worldPosB)
+    {
+        Vector2Int a = GetGridPosRound(worldPosA);
+        Vector2Int b = GetGridPosRound(worldPosB);
+
+        return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y);
+    }
+
+    public bool CheckGridIsEmpty(Vector3 worldPos, int layerMask = Physics.AllLayers, QueryTriggerInteraction interaction = QueryTriggerInteraction.UseGlobal)
+    {
+        Vector2Int world = GetGridPosRound(worldPos);
+
+        return CheckGridIsEmpty(world, layerMask, interaction);
+    }
+
+    public bool CheckGridIsEmpty(Vector2Int gridPos, int layerMask = Physics.AllLayers, QueryTriggerInteraction interaction = QueryTriggerInteraction.UseGlobal)
+    {
+        Vector3 world = GetGridPosAsWrold(gridPos);
+
+        float halfGrid = gridSize * 0.5f;
+
+        Vector3 cent = world + (Vector3.up * halfGrid);
+        Vector3 extent = new Vector3(halfGrid - (halfGrid * 0.1f), halfGrid - (halfGrid * 0.1f), halfGrid - (halfGrid * 0.1f));
+
+        Debug.DrawLine(cent, cent + Vector3.forward * extent.z, Color.wheat, 10f);
+        Debug.DrawLine(cent, cent + Vector3.back * extent.z, Color.wheat, 10f);
+
+        Debug.DrawLine(cent, cent + Vector3.up * extent.y, Color.wheat, 10f);
+        Debug.DrawLine(cent, cent + Vector3.down * extent.y, Color.wheat, 10f);
+
+        Debug.DrawLine(cent, cent + Vector3.right * extent.x, Color.wheat, 10f);
+        Debug.DrawLine(cent, cent + Vector3.left * extent.x, Color.wheat, 10f);
+
+
+        return !Physics.CheckBox(world + (Vector3.up * halfGrid), new Vector3(halfGrid - (halfGrid * 0.1f), halfGrid - (halfGrid * 0.1f), halfGrid - (halfGrid * 0.1f)), transform.rotation, layerMask, interaction);
+    }
+
+    public Collider[] GetCollidersOnGrid(Vector3 pos, int range, int layerMask = Physics.AllLayers, QueryTriggerInteraction interaction = QueryTriggerInteraction.UseGlobal)
+    {
+        Vector2Int world = GetGridPosRound(pos);
+
+        return GetCollidersOnGrid(world, range, layerMask, interaction);
+    }
+
+    public Collider[] GetCollidersOnGrid(Vector2Int pos, int range, int layerMask = Physics.AllLayers, QueryTriggerInteraction interaction = QueryTriggerInteraction.UseGlobal)
+    {
+        Vector3 world = GetGridPosAsWrold(pos);
+
+        float halfGrid = gridSize * 0.5f;
+
+
+        List<Collider> allCols = new List<Collider>();
+
+        for (int x = -range; x <= range; x++)
+        {
+            for (int y = -range; y <= range; y++)
+            {
+                if (Mathf.Abs(x) + Mathf.Abs(y) <= range)
+                {
+                    Collider[] cols = Physics.OverlapBox(GetGridPosAsWrold(pos + new Vector2Int(x, y)) + (Vector3.up * halfGrid), new Vector3(halfGrid - (halfGrid * 0.1f), halfGrid - (halfGrid * 0.1f), halfGrid - (halfGrid * 0.1f)), transform.rotation);
+
+                    foreach (Collider col in cols)
+                    {
+                        if (allCols.Contains(col)) continue;
+                        allCols.Add(col);
+                    }
+                }
+            }
+        }
+
+        return allCols.ToArray();
+    }
+
+    public Collider[] GetCollidersInRange(Vector3 pos, int radius, int layerMask = Physics.AllLayers, QueryTriggerInteraction interaction = QueryTriggerInteraction.UseGlobal)
+    {
+        Vector2Int world = GetGridPosRound(pos);
+
+        return GetCollidersInRange(world, radius, layerMask, interaction);
+    }
+
+    public Collider[] GetCollidersInRange(Vector2Int pos, int radius, int layerMask = Physics.AllLayers, QueryTriggerInteraction interaction = QueryTriggerInteraction.UseGlobal)
+    {
+        Vector3 world = GetGridPosAsWrold(pos);
+        // print(world);
+        float halfGrid = gridSize * 0.5f;
+
+        List<Collider> allCols = new List<Collider>();
+
+        for (int x = -radius; x <= radius; x++)
+        {
+            for (int y = -radius; y <= radius; y++)
+            {
+                if (Mathf.FloorToInt(Mathf.Sqrt(Mathf.Pow(x, 2) + Mathf.Pow(y, 2))) <= radius)
+                {
+                    Collider[] cols = Physics.OverlapBox(GetGridPosAsWrold(pos + new Vector2Int(x, y)) + (Vector3.up * halfGrid), new Vector3(halfGrid - (halfGrid * 0.1f), halfGrid - (halfGrid * 0.1f), halfGrid - (halfGrid * 0.1f)), transform.rotation);
+
+                    // Debug.DrawLine(GetGridPosAsWrold(pos + new Vector2Int(x, y)), GetGridPosAsWrold(pos + new Vector2Int(x, y)) + Vector3.up, Color.pink, 60f);
+
+                    foreach (Collider col in cols)
+                    {
+                        if (allCols.Contains(col)) continue;
+                        allCols.Add(col);
+                    }
+                }
+            }
+        }
+
+        return allCols.ToArray();
     }
 
     void OnDrawGizmos()

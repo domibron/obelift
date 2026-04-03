@@ -39,6 +39,19 @@ public class PlayerPhase : PhaseStateBase
             {
                 if (gridSystem.CurrentSelectedTile.HasValue)
                 {
+                    // Debug.Log(Vector3.Distance(gridSystem.CurrentSelectedTile.Value, gridSystem.GetPosAsGridWorld(playerMovement.transform.position)));
+
+                    if (Vector3.Distance(gridSystem.CurrentSelectedTile.Value, gridSystem.GetPosAsGridWorld(playerMovement.transform.position)) < GameManager.MIN_MOVE_DIST)
+                    {
+                        gameManager.ChangePhase(Phase.EnemiesMove);
+                        return;
+                    }
+                    else if (!gridSystem.CheckGridIsEmpty(gridSystem.CurrentSelectedTile.Value, Constants.GRID_BLOCKER_LAYER))
+                    {
+                        Debug.Log("Failed to move, its blocked");
+                        return;
+                    }
+
                     playerMovement.MoveTo(gridSystem.CurrentSelectedTile.Value);
                     gridSystem.ClearSelectableGrid();
                     hasSelected = true;
