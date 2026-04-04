@@ -43,6 +43,8 @@ public class PlayerPhase : PhaseStateBase
 
                     if (Vector3.Distance(gridSystem.CurrentSelectedTile.Value, gridSystem.GetPosAsGridWorld(playerMovement.transform.position)) < GameManager.MIN_MOVE_DIST)
                     {
+                        gridSystem.ClearSelectableGrid();
+                        Attack(); // ? could put on exit phase.
                         gameManager.ChangePhase(Phase.EnemiesMove);
                         return;
                     }
@@ -62,8 +64,30 @@ public class PlayerPhase : PhaseStateBase
         {
             if (playerMovement.HasReachedDestination())
             {
+                Attack();
                 gameManager.ChangePhase(Phase.EnemiesMove);
 
+            }
+        }
+    }
+
+    void Attack()
+    {
+        Collider[] cols = gridSystem.GetCollidersInRange(playerMovement.transform.position, playerMovement.AttackRange, Constants.GRID_BLOCKER_LAYER);
+
+        if (cols.Length <= 0)
+        {
+            // print("No enemies");
+            return;
+        }
+
+        foreach (Collider col in cols)
+        {
+            if (col.gameObject.CompareTag(Constants.EMEMY_TAG))
+            {
+                col.transform.GetComponent<Health>()?.TakeFromHealth(10f);
+                // print("Get fucked");
+                // print(col.transform.name);
             }
         }
     }

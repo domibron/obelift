@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
 
     public int MoveRange = 5;
 
+    public int AttackRange = 1;
+
     void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();

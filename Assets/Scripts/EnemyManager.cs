@@ -17,8 +17,8 @@ public class EnemyManager : MonoBehaviour
 
     Coroutine attackCoroutine;
 
-    float minDist = 15f;
-    float maxDist = 30f;
+    float minDist = 5f;
+    float maxDist = 10f;
 
     float minAngle = -65f;
     float maxAngle = 65f;
