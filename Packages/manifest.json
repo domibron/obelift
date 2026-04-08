@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.antigravity.ide": "https://github.com/billythekidz/UnityAntigravityIDE.git",
     "com.unity.ai.navigation": "2.0.12",
     "com.unity.feature.2d": "2.0.2",
     "com.unity.formats.fbx": "5.1.5",
