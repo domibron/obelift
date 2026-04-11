@@ -308,6 +308,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc1a4f475d93fbc42963155ccaf4233e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
+--- !u!114 &934582912 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5298212446011156695, guid: 80ea76fa40704ac4997bae7c3787f45a, type: 3}
+  m_PrefabInstance: {fileID: 5712248725379557676}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61c44ae8d22aac24982fa81b2770a1f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InGameUI
 --- !u!114 &1031534577 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8039701742230081409, guid: 76b578c07991e424ea0234c598aff9e0, type: 3}
@@ -1144,6 +1155,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 9072075081707595551, guid: e4a326243bb74774f9c385a9630bd36e, type: 3}
+      propertyPath: InGameUI
+      value: 
+      objectReference: {fileID: 934582912}
     - target: {fileID: 9072075081707595551, guid: e4a326243bb74774f9c385a9630bd36e, type: 3}
       propertyPath: GridSystem
       value: 

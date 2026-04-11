@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InGameUI : MonoBehaviour
 {
@@ -25,6 +26,8 @@ public class InGameUI : MonoBehaviour
     {
         if (Storage.Instance != null)
             Storage.Instance.lastColumn = Storage.Instance.selectedColumn;
+
+        SceneManager.LoadScene(1);
     }
 
     public void LoseContinue()
@@ -33,5 +36,8 @@ public class InGameUI : MonoBehaviour
         {
             Storage.Instance.currentStage--;
         }
+
+        SceneManager.LoadScene(1);
+
     }
 }

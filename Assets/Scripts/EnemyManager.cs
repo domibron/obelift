@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
+    [SerializeField]
+    List<EnemyBase> unactivatedEnemeies = new List<EnemyBase>();
+
     List<EnemyBase> enemies = new List<EnemyBase>();
 
     public event Action OnAllAttacksFinished;
@@ -34,7 +37,7 @@ public class EnemyManager : MonoBehaviour
     {
         towerTrans = gameManager.TowerMovemnet.transform;
         cameraTarget = gameManager.CameraTarget;
-
+        SetUpAlreadySpawnedEnemies();
     }
 
     public void StartAttacks()
@@ -116,6 +119,32 @@ public class EnemyManager : MonoBehaviour
         enemies.Add(eBase);
 
         cameraTarget.Target = enemySpawnedObject.transform;
+    }
+
+    private void SetUpAlreadySpawnedEnemies()
+    {
+        foreach (var enemy in unactivatedEnemeies)
+        {
+            enemy.GetComponent<EnemyBase>().SetUpEnemy(gameManager);
+        }
+    }
+
+    public void ActivateEnemy(GameObject enemyToActivate)
+    {
+        EnemyBase enemyToActivateBase = null;
+
+        foreach (var enemy in unactivatedEnemeies)
+        {
+            if (enemy.gameObject == enemyToActivate)
+            {
+                enemyToActivateBase = enemy;
+            }
+        }
+
+        if (!enemyToActivateBase) return;
+
+        unactivatedEnemeies.Remove(enemyToActivateBase);
+        enemies.Add(enemyToActivateBase);
     }
 
     private void EndAttack()

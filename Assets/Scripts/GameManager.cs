@@ -41,6 +41,8 @@ public class GameManager : MonoBehaviour
 
     public EnemyManager EnemyManager;
 
+    public InGameUI InGameUI;
+
     public const float MIN_MOVE_DIST = 0.01f;
 
     bool phaseChangeOccured = false;
@@ -74,6 +76,8 @@ public class GameManager : MonoBehaviour
             {Phase.MoveTower, new TowerPhase(this)},
             {Phase.PlayerMove, new PlayerPhase(this)},
             {Phase.EnemiesMove, new EnemyPhase(this)},
+            {Phase.Win, new WinPhase(this)},
+            {Phase.Lose, new LosePhase(this)},
         };
     }
 

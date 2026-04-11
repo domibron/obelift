@@ -4,6 +4,9 @@ using UnityEngine.AI;
 
 public class BasicEnemy : EnemyBase
 {
+    [SerializeField] float detectionRange = 10f;
+    [SerializeField] bool isActive = true;
+
     private NavMeshAgent navMeshAgent;
 
     private Transform tower;
@@ -22,9 +25,19 @@ public class BasicEnemy : EnemyBase
         navMeshAgent = GetComponent<NavMeshAgent>();
     }
 
+    void Update()
+    {
+        if (!isActive && Vector3.Distance(gameManager.PlayerMovement.transform.position, transform.position) < detectionRange)
+        {
+            isActive = true;
+            gameManager.EnemyManager.ActivateEnemy(gameObject);
+        }
+    }
+
 
     public override void StartMove()
     {
+
         if (attackCo != null)
         {
 

@@ -1092,6 +1092,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 80ea76fa40704ac4997bae7c3787f45a, type: 3}
+--- !u!114 &5712248725379557677 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5298212446011156695, guid: 80ea76fa40704ac4997bae7c3787f45a, type: 3}
+  m_PrefabInstance: {fileID: 5712248725379557676}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61c44ae8d22aac24982fa81b2770a1f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InGameUI
 --- !u!1001 &6116821472917756290
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1144,6 +1155,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 9072075081707595551, guid: e4a326243bb74774f9c385a9630bd36e, type: 3}
+      propertyPath: InGameUI
+      value: 
+      objectReference: {fileID: 5712248725379557677}
     - target: {fileID: 9072075081707595551, guid: e4a326243bb74774f9c385a9630bd36e, type: 3}
       propertyPath: GridSystem
       value: 

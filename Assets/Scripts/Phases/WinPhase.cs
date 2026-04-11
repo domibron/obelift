@@ -8,16 +8,16 @@ public class WinPhase : PhaseStateBase
 
     public override void EnterPhase()
     {
-        throw new System.NotImplementedException();
+        gameManager.InGameUI.ShowWinScreen();
     }
 
     public override void ExitPhase()
     {
-        throw new System.NotImplementedException();
+
     }
 
     public override void PhaseTick(float deltaTime)
     {
-        throw new System.NotImplementedException();
+
     }
 }
