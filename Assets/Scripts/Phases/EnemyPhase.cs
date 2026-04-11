@@ -18,7 +18,7 @@ public class EnemyPhase : PhaseStateBase
 
     public override void ExitPhase()
     {
-
+        enemyManager.StopAllCoroutines(); // TODO: This is to stop enemies from moving once the tower is dead.
     }
 
     public override void PhaseTick(float deltaTime)

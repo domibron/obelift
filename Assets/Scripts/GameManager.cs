@@ -20,6 +20,8 @@ public enum Phase
     MoveTower,
     PlayerMove,
     EnemiesMove,
+    Win,
+    Lose,
 }
 
 public class GameManager : MonoBehaviour

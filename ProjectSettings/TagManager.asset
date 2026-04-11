@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Tower
   - Enemy
+  - Goal
   layers:
   - Default
   - TransparentFX
@@ -15,7 +16,7 @@ TagManager:
   - UI
   - Grid Blocker
   - Grid
-  - 
+  - Goal
   - 
   - 
   - 

@@ -61,8 +61,10 @@ public class TowerPhase : PhaseStateBase
         {
             if (towerMovemnet.HasReachedDestination())
             {
-                gameManager.ChangePhase(Phase.PlayerMove);
-
+                if (gridSystem.GetGridPosRound(towerMovemnet.transform.position) == gridSystem.GetGridPosRound(towerMovemnet.GetGoalPos()))
+                    gameManager.ChangePhase(Phase.Win);
+                else
+                    gameManager.ChangePhase(Phase.PlayerMove);
             }
         }
     }

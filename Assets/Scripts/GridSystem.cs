@@ -30,6 +30,8 @@ public class GridSystem : MonoBehaviour
 
     private List<GameObject> selectableTiles = new List<GameObject>();
 
+    [SerializeField] Vector2Int maxBounds = new(100, 100);
+    [SerializeField] Vector2Int minBounds = new(-100, -100);
 
 
     public Vector3? SelectedWorldPos
@@ -183,7 +185,7 @@ public class GridSystem : MonoBehaviour
         {
             for (int y = -range; y <= range; y++)
             {
-                if (Mathf.Abs(x) + Mathf.Abs(y) <= range)
+                if (Mathf.Abs(x) + Mathf.Abs(y) <= range && IsGridPosWithinBounds(new Vector2Int(gridPos.x + x, gridPos.y + y)))
                 {
                     GameObject tile = Instantiate(selectableTilePrefab, GetGridPosAsWrold(new Vector2Int(gridPos.x + x, gridPos.y + y)), Quaternion.identity);
                     selectableTiles.Add(tile);
@@ -302,6 +304,11 @@ public class GridSystem : MonoBehaviour
         return allCols.ToArray();
     }
 
+    public bool IsGridPosWithinBounds(Vector2Int vec)
+    {
+        return !(vec.x < minBounds.x || vec.x > maxBounds.x || vec.y < minBounds.y || vec.y > maxBounds.y);
+    }
+
     void OnDrawGizmos()
     {
         Vector3 size = new Vector3(gridSize, gridSize, gridSize);
@@ -321,6 +328,15 @@ public class GridSystem : MonoBehaviour
         Gizmos.DrawWireCube(transform.position + (Vector3.right * gridSize) + (Vector3.back * gridSize), size);
         Gizmos.DrawWireCube(transform.position + (Vector3.left * gridSize) + (Vector3.back * gridSize), size);
 
+        Gizmos.color = Color.cyan;
+
+        Vector2Int boundLengths = maxBounds - minBounds;
+
+        Vector2Int midpoint = maxBounds - (boundLengths / 2);
+
+        Gizmos.DrawWireCube(GetGridPosAsWrold(midpoint), ConvertVec2IntoToVec3(boundLengths, 1));
+
         Gizmos.color = Color.white;
+
     }
 }

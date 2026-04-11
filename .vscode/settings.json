@@ -1,6 +1,5 @@
 {
-    "dotnet.defaultSolution": "obelift.sln",
-    "dotnet.dotnetPath": "C:/Program Files/dotnet/dotnet.exe",
+    "dotnet.defaultSolution": "obelift.slnx",
     "dotrush.roslyn.dotnetSdkDirectory": "C:/Program Files/dotnet/sdk/9.0.308",
     "dotrush.msbuildProperties": {
         "DefineConstants": "UNITY_EDITOR"

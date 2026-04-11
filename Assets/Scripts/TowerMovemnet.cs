@@ -7,6 +7,8 @@ public class TowerMovemnet : MonoBehaviour
 
     public int TowerRange = 3;
 
+    [SerializeField] Transform goal;
+
     void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -22,4 +24,8 @@ public class TowerMovemnet : MonoBehaviour
         return navMeshAgent.remainingDistance < GameManager.MIN_MOVE_DIST;
     }
 
+    public Vector3 GetGoalPos()
+    {
+        return goal.position;
+    }
 }
