@@ -24,11 +24,13 @@ public class TowerPhase : PhaseStateBase
         hasSelected = false;
         cameraTarget.Target = towerMovemnet.transform;
         gridSystem.GenerateSelectableGrid(towerMovemnet.transform.position, towerMovemnet.TowerRange);
+
+        towerMovemnet.SetCompasVisible(true);
     }
 
     public override void ExitPhase()
     {
-
+        towerMovemnet.SetCompasVisible(false);
     }
 
     public override void PhaseTick(float deltaTime)

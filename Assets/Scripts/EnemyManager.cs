@@ -80,6 +80,8 @@ public class EnemyManager : MonoBehaviour
 
         foreach (var enemy in enemies)
         {
+            if (!enemy) continue;
+
             enemyAttackFinished = false;
             enemy.OnMoveFinished += EnemyConcludedAttack;
             cameraTarget.Target = enemy.transform;

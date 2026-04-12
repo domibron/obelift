@@ -65,6 +65,11 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        if (PlayerMovement.GetComponent<Health>().GetHealthNormalized() <= 0 || TowerMovemnet.GetComponent<Health>().GetHealthNormalized() <= 0)
+        {
+            ChangePhase(Phase.Lose);
+            return;
+        }
 
         CallPhaseTick(CurrentPhase);
     }
