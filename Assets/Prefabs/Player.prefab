@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 2726050247115668127}
   - component: {fileID: 2643274771399414626}
   - component: {fileID: 7194396961629686284}
+  - component: {fileID: 3939800789933376276}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -191,6 +192,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Health
   maxHealth: 100
+--- !u!114 &3939800789933376276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2171279206835179627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f60e045077419f45a6156936f97084a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Bob
+  navMeshAgent: {fileID: 4686509074948666290}
+  targetBobTrans: {fileID: 4826608077461951548}
+  bobAplitude: 0.5
+  bobFreq: 5
 --- !u!1 &3579522900174692449
 GameObject:
   m_ObjectHideFlags: 0
